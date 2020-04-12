@@ -2,9 +2,13 @@
 import cards from './cards.js';
 
 let links = document.querySelector('.navigation-list');
-
+let gameStatus = false;
 
 const wrap = document.querySelector('.wrapper');
+const CHECK = document.querySelector('.train-switch');
+const BUTTONG = document.createElement('button');
+BUTTONG.textContent = 'Start Game';
+BUTTONG.className = 'game-button';
 const contentBlock = document.createElement('div');
 contentBlock.className = 'content-block';
 wrap.appendChild(contentBlock);
@@ -59,6 +63,26 @@ function createCard(backgroundImg, word, translate, audioLink){
     contentBlock.appendChild(cardContainer);
 }
 
+function createMainCard(backgroundImg, cardTitle){
+    let cardContainer = document.createElement('div');
+    let card = document.createElement('div');
+    let imga = document.createElement('img');
+    let cardHeader = document.createElement('div');
+    cardContainer.className = 'card-container';
+    card.className = 'card--main';
+    imga.className = 'main-card-img';
+    cardHeader.className = 'card-header';
+
+    imga.src = backgroundImg;
+    cardHeader.textContent = cardTitle;
+    card.appendChild(imga);
+    card.appendChild(cardHeader);
+
+    cardContainer.appendChild(card);
+
+    contentBlock.appendChild(cardContainer);
+}
+
 
 function contentClear() {
     while(contentBlock.firstChild) {
@@ -66,39 +90,103 @@ function contentClear() {
     }
 }
 
-links.addEventListener('click', (event) => {
-    let ind = cards[0].indexOf(event.target.textContent);
-    let mas = cards[ind+1];
-    contentClear();
+function createMainPage(){
+    let mas = cards[0];
     for(let i = 0; i < mas.length; i++){
-        createCard(mas[i].image, mas[i].word, mas[i].translation, mas[i].audioSrc);
+        createMainCard(cards[i+1][0].image, mas[i]);
     }
-    let audio = document.createElement('audio');
-    audio.className = 'audio';
-    audio.src = "";
-    contentBlock.appendChild(audio);
+    contentBlock.classList.add('main');
+}
+
+createMainPage();
+
+function createCards(eventTextContent){
+    if(eventTextContent!= "Main Page" && eventTextContent != "Statistic"){
+        let ind = cards[0].indexOf(eventTextContent);
+        let mas = cards[ind+1];
+        contentClear();
+        let rateString = document.createElement('div');
+        rateString.className = "game-string";
+        contentBlock.appendChild(rateString);
+        for(let i= 0; i < mas.length; i++){    
+             createCard(mas[i].image, mas[i].word, mas[i].translation, mas[i].audioSrc);
+        }
+        let audio = document.createElement('audio');
+        audio.className = 'audio';
+        audio.src = "";
+        contentBlock.appendChild(audio);
+        if(contentBlock.classList.contains('main')){
+            contentBlock.classList.remove('main');
+            contentBlock.classList.add('game-cards');
+        }
+    }  else if(eventTextContent == "Main Page"){
+        contentClear();
+        createMainPage();
+        if(contentBlock.classList.contains('game-cards')){
+            contentBlock.classList.remove('game-cards');
+            contentBlock.classList.add('main');
+        }
+    }
+
+}
+
+links.addEventListener('click', (event) => {
+    createCards(event.target.textContent);
     burgerIcon.classList.toggle('burger-icon-active');
     navigationBlock.classList.remove('navigation-block-active');
+    document.querySelectorAll('.navigation-list li a').forEach(el => el.classList.remove('li-active'));
+    if(!event.target.classList.contains('navigation-list')){
+        event.target.classList.add('li-active');
+    }
 });
 
 contentBlock.addEventListener('click', (event) => {
-    if(event.target.classList.contains('front-card')){
-        document.querySelector('.audio').src = event.target.id;
-        document.querySelector('.audio').autoplay = 'autoplay';
-    }
-    if(event.target.classList.contains('rotate')){
-        event.target.closest('.card').childNodes[1].classList.add('back-active');
-        event.target.closest('.card').childNodes[0].classList.add('front-active');
-        event.target.classList.add('rotate-none');
+    if(contentBlock.classList.contains('game-cards')){
+        if(event.target.classList.contains('front-card')){
+            document.querySelector('.audio').src = event.target.id;
+            document.querySelector('.audio').autoplay = 'autoplay';
+        }
+        if(event.target.classList.contains('rotate')){
+            event.target.closest('.card').childNodes[1].classList.add('back-active');
+            event.target.closest('.card').childNodes[0].classList.add('front-active');
+            event.target.classList.add('rotate-none');
+        }
+    } else if(contentBlock.classList.contains('main')){
+        if(event.target.classList.contains('card--main')){
+            contentClear();
+            contentBlock.classList.remove('main');
+            contentBlock.classList.add('game-cards');
+            createCards(event.target.textContent);
+        }
     }
 });
 
 contentBlock.onmouseout = function(event) {
-    if(event.target.classList.contains('card-container')){
-        event.target.childNodes[0].childNodes[0].classList.remove('front-active');
-        event.target.childNodes[0].childNodes[1].classList.remove('back-active');
-        event.target.childNodes[0].childNodes[2].classList.remove('rotate-none');
+    if(contentBlock.classList.contains('game-cards')){
+        if(event.target.classList.contains('card-container')){
+            event.target.childNodes[0].childNodes[0].classList.remove('front-active');
+            event.target.childNodes[0].childNodes[1].classList.remove('back-active');
+            event.target.childNodes[0].childNodes[2].classList.remove('rotate-none');
+        }
     }
-}
+};
+
+CHECK.addEventListener('change', (event) => {
+    if(event.target.checked){
+        gameStatus = false;
+        contentBlock.appendChild(BUTTONG);
+    } else {
+        BUTTONG.classList.remove('game-button-active');
+        contentBlock.removeChild(BUTTONG);
+    }
+});
+
+BUTTONG.addEventListener('click', (event) => {
+    if(!event.target.classList.contains('game-button-active')){
+        event.target.classList.add('game-button-active');
+    }
+});
+
+
 
 
