@@ -119,6 +119,10 @@ input[type=checkbox]:checked + .switch-btn {
     transition: 0.5s;
 }
 
+.navigation-block--game {
+    background: linear-gradient(180deg,#007b7d,rgb(7, 255, 189) 100%,#fff 0,#fff);
+}
+
 .navigation-block-active{
     transform: translateX(0%);
 }
@@ -174,7 +178,7 @@ input[type=checkbox]:checked + .switch-btn {
     cursor: pointer;
     font-size: 26px;
     color: white;
-    background: linear-gradient(180deg,#007b7d,rgb(7, 255, 189) 100%,#fff 0,#fff);
+    background: linear-gradient(40deg,#005b67, rgb(29, 106, 132));
     transition: all 1s;
 }
 
@@ -186,7 +190,7 @@ input[type=checkbox]:checked + .switch-btn {
     width: 85px;
     height: 85px;
     font-size: 0;
-    background-image: url(./img/repeat.svg),linear-gradient(40deg,#005b67, rgb(29, 106, 132));
+    background-image: url(./img/repeat.svg),linear-gradient(180deg,#007b7d,rgb(7, 255, 189) 100%,#fff 0,#fff);
     border-radius: 50%;
     background-repeat: no-repeat;
     background-size: 32px 32px,cover;
@@ -243,6 +247,10 @@ input[type=checkbox]:checked + .switch-btn {
     cursor: pointer;
 }
 
+.card--game {
+    display: none;
+}
+
 .front-card:hover{
     box-shadow:0px 0px 15px 9px rgba(0,0,0,0.21);
 }
@@ -261,6 +269,10 @@ input[type=checkbox]:checked + .switch-btn {
     box-shadow: 3px 1px 2px 1px rgba(0, 0, 0, 0.2);
     perspective: 1000px;
     cursor: pointer;
+}
+
+.main--game {
+    background: linear-gradient(180deg,#007b7d,rgb(7, 255, 189) 40%,#fff 0,#fff);
 }
 
 .card--main:hover{

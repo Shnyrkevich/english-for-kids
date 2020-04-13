@@ -3,6 +3,8 @@ import cards from './cards.js';
 
 let links = document.querySelector('.navigation-list');
 let gameStatus = false;
+let gameCardsStatus = '';
+let startGameStatus = false;
 
 const wrap = document.querySelector('.wrapper');
 const CHECK = document.querySelector('.train-switch');
@@ -43,6 +45,11 @@ function createCard(backgroundImg, word, translate, audioLink){
     cardHeaderF.className = 'card-header';
     cardHeaderB.className = 'card-header';
 
+    if(gameStatus){
+        cardHeaderF.classList.add('card--game');
+        rotate.classList.add('card--game');
+    }
+
     frontCard.id  = audioLink;
 
     card.appendChild(frontCard);
@@ -73,6 +80,10 @@ function createMainCard(backgroundImg, cardTitle){
     imga.className = 'main-card-img';
     cardHeader.className = 'card-header';
 
+    if(gameStatus){
+        card.classList.add('main--game');
+    }
+
     imga.src = backgroundImg;
     cardHeader.textContent = cardTitle;
     card.appendChild(imga);
@@ -82,7 +93,6 @@ function createMainCard(backgroundImg, cardTitle){
 
     contentBlock.appendChild(cardContainer);
 }
-
 
 function contentClear() {
     while(contentBlock.firstChild) {
@@ -119,6 +129,9 @@ function createCards(eventTextContent){
             contentBlock.classList.remove('main');
             contentBlock.classList.add('game-cards');
         }
+        if(gameStatus){
+            contentBlock.appendChild(BUTTONG);
+        }
     }  else if(eventTextContent == "Main Page"){
         contentClear();
         createMainPage();
@@ -130,8 +143,19 @@ function createCards(eventTextContent){
 
 }
 
+function gameMode(){
+    if(startGameStatus){
+        contentBlock.childNodes.forEach(el => {
+            if(el.classList.contains('card-container')){
+                console.log(el.childNodes[0].childNodes);
+            }
+        });
+    }
+}
+
 links.addEventListener('click', (event) => {
     createCards(event.target.textContent);
+    gameCardsStatus = event.target.textContent;
     burgerIcon.classList.toggle('burger-icon-active');
     navigationBlock.classList.remove('navigation-block-active');
     document.querySelectorAll('.navigation-list li a').forEach(el => el.classList.remove('li-active'));
@@ -141,7 +165,7 @@ links.addEventListener('click', (event) => {
 });
 
 contentBlock.addEventListener('click', (event) => {
-    if(contentBlock.classList.contains('game-cards')){
+    if(contentBlock.classList.contains('game-cards') && gameStatus == false){
         if(event.target.classList.contains('front-card')){
             document.querySelector('.audio').src = event.target.id;
             document.querySelector('.audio').autoplay = 'autoplay';
@@ -157,12 +181,13 @@ contentBlock.addEventListener('click', (event) => {
             contentBlock.classList.remove('main');
             contentBlock.classList.add('game-cards');
             createCards(event.target.textContent);
+            gameCardsStatus = event.target.textContent;
         }
     }
 });
 
 contentBlock.onmouseout = function(event) {
-    if(contentBlock.classList.contains('game-cards')){
+    if(contentBlock.classList.contains('game-cards') && gameStatus === false){
         if(event.target.classList.contains('card-container')){
             event.target.childNodes[0].childNodes[0].classList.remove('front-active');
             event.target.childNodes[0].childNodes[1].classList.remove('back-active');
@@ -173,17 +198,34 @@ contentBlock.onmouseout = function(event) {
 
 CHECK.addEventListener('change', (event) => {
     if(event.target.checked){
-        gameStatus = false;
-        contentBlock.appendChild(BUTTONG);
+        gameStatus = true;
+        if(contentBlock.classList.contains('main')){
+            contentClear();
+            createMainPage();
+        } else if(contentBlock.classList.contains('game-cards')){
+            contentClear();
+            createCards(gameCardsStatus);
+        }
+        document.querySelector('.navigation-block').classList.add('navigation-block--game');
     } else {
+        gameStatus = false;
         BUTTONG.classList.remove('game-button-active');
-        contentBlock.removeChild(BUTTONG);
+        if(contentBlock.classList.contains('main')){
+            contentClear();
+            createMainPage();
+        } else if(contentBlock.classList.contains('game-cards')){
+            contentClear();
+            createCards(gameCardsStatus);
+        }
+        document.querySelector('.navigation-block').classList.remove('navigation-block--game');
     }
 });
 
 BUTTONG.addEventListener('click', (event) => {
     if(!event.target.classList.contains('game-button-active')){
         event.target.classList.add('game-button-active');
+        startGameStatus = true;
+        gameMode();
     }
 });
 
