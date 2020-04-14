@@ -239,6 +239,7 @@ input[type=checkbox]:checked + .switch-btn {
     border-radius: 5%;
     backface-visibility: hidden;
     transform: rotateY(180deg);
+    background-size: contain;
 }
 
 .front-active {
@@ -261,6 +262,7 @@ input[type=checkbox]:checked + .switch-btn {
     box-shadow: 3px 1px 2px 1px rgba(0, 0, 0, 0.2);
     backface-visibility: hidden;
     cursor: pointer;
+    background-size: contain;
 }
 
 .front-card-compl {

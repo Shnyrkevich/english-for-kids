@@ -145,6 +145,8 @@ function createCards(eventTextContent){
         }
         if(gameStatus){
             contentBlock.appendChild(BUTTONG);
+            startGameStatus = false;
+            BUTTONG.classList.remove('game-button-active');
         }
     }  else if(eventTextContent == "Main Page"){
         contentClear();
@@ -154,7 +156,6 @@ function createCards(eventTextContent){
             contentBlock.classList.add('main');
         }
     }
-
 }
 
 function getRandomInt(mas){
