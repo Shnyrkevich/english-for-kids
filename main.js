@@ -54,6 +54,7 @@ function createCard(backgroundImg, word, translate, audioLink){
     if(gameStatus){
         cardHeaderF.classList.add('card--game');
         rotate.classList.add('card--game');
+        frontCard.classList.add('front-card--game');
     }
 
     frontCard.id  = audioLink;

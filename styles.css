@@ -265,6 +265,10 @@ input[type=checkbox]:checked + .switch-btn {
     background-size: contain;
 }
 
+.front-card--game {
+    background-size: cover;
+}
+
 .front-card-compl {
     opacity: 0.5;
 }
