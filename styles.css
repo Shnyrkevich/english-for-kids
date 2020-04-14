@@ -103,7 +103,7 @@ input[type=checkbox]:checked + .switch-btn:before {
 }
 
 input[type=checkbox]:checked + .switch-btn {
-    background: rgb(29, 106, 132);
+    background: rgb(33, 231, 178);
 }
 
 .navigation-block{
@@ -197,6 +197,22 @@ input[type=checkbox]:checked + .switch-btn {
     background-position: 50%;
 }
 
+.star-compl {
+    margin: 0;
+    width: 40px;
+    height: 40px;
+    background-size: 40px 40px;
+    background-image: url(./img/star-win.svg);
+}
+
+.star-defeate {
+    margin: 0;
+    width: 40px;
+    height: 40px;
+    background-size: 40px 40px;
+    background-image: url(./img/star.svg); 
+}
+
 .card-container {
     margin: 0;
     width: 350px;
@@ -245,6 +261,10 @@ input[type=checkbox]:checked + .switch-btn {
     box-shadow: 3px 1px 2px 1px rgba(0, 0, 0, 0.2);
     backface-visibility: hidden;
     cursor: pointer;
+}
+
+.front-card-compl {
+    opacity: 0.5;
 }
 
 .card--game {
