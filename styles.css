@@ -304,8 +304,9 @@ input[type=checkbox]:checked + .switch-btn {
 .main-card-img{
     display: block;
     margin-top: -15%;
-    width:55%;
-    height: 60%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
     border: 15px solid white;
     border-radius: 100%;
 }
