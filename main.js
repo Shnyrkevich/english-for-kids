@@ -10,6 +10,11 @@ let gameCompliteCounter = 0;
 
 const rateString = document.createElement('div');
 rateString.className = "game-string";
+const winLoseBlock = document.createElement('div');
+const winLoseMassage = document.createElement('div');
+winLoseMassage.className = "win-or-lose--message";
+winLoseBlock.className = "win-or-lose";
+winLoseBlock.appendChild(winLoseMassage);
 
 const wrap = document.querySelector('.wrapper');
 const CHECK = document.querySelector('.train-switch');
@@ -19,7 +24,6 @@ BUTTONG.className = 'game-button';
 const contentBlock = document.createElement('div');
 contentBlock.className = 'content-block'
 wrap.appendChild(contentBlock);
-
 
 const burgerBlock = document.querySelector('.burger');
 const burgerIcon = document.querySelector('.burger-icon');
@@ -101,6 +105,36 @@ function createMainCard(backgroundImg, cardTitle){
     contentBlock.appendChild(cardContainer);
 }
 
+function createStatiticEl(obj){
+    let row = document.createElement('li');
+    row.className = 'statistic-row';
+
+    for(let el in obj){
+        if(el == "word" || el == "translation" || el == "trainClick" || el == "successCllick" || el == "failedClick"){
+            let rowEl = document.createElement('div');
+            rowEl.textContent = obj[el];
+            row.appendChild(rowEl);
+        }
+    }
+    
+    return row;
+} 
+
+function createStatistic(){
+    for(let i = 0; i < cards[0].length; i++){
+        let list  = document.createElement('ul');
+        list.className = 'statistic-list';
+        let listName = document.createElement('li');
+        listName.className = "list-name";
+        listName.textContent = cards[0][i];
+        list.appendChild(listName);
+        for(let j = 0; j < cards[i+1].length; j++){
+            list.appendChild(createStatiticEl(cards[i+1][j]));
+        }
+        contentBlock.appendChild(list);
+    }
+}
+
 function contentClear() {
     while(contentBlock.firstChild) {
        contentBlock.removeChild(contentBlock.firstChild);
@@ -123,7 +157,7 @@ function createMainPage(){
 createMainPage();
 
 function createCards(eventTextContent){
-    if(eventTextContent!= "Main Page" && eventTextContent != "Statistic"){
+    if(eventTextContent != "Main Page" && eventTextContent != "Statistic"){
         let ind = cards[0].indexOf(eventTextContent);
         let mas = cards[ind+1];
         contentClear();
@@ -156,6 +190,11 @@ function createCards(eventTextContent){
             contentBlock.classList.remove('game-cards');
             contentBlock.classList.add('main');
         }
+    } else if(eventTextContent == "Statistic"){
+        contentClear();
+
+        createStatistic();
+        console.log('lol');
     }
 }
 
@@ -164,6 +203,7 @@ function getRandomInt(mas){
 }
 
 function gameMode(){
+    console.log(gameCompliteCounter)
     let sounds = [];
     document.querySelectorAll('.front-card').forEach(el => {
         if(!el.classList.contains('front-card-compl')){
@@ -171,19 +211,27 @@ function gameMode(){
         }
     });
     let randomInt = getRandomInt(sounds);
-    if(startGameStatus){
+    if(startGameStatus && sounds != []){
         document.querySelector('.audio').src = sounds[randomInt];
         document.querySelector('.audio').id  = sounds[randomInt];
         document.querySelector('.audio').autoplay = 'autoplay';
     }
     if(gameCompliteCounter == 8 && rateString.childNodes.length == 8){
-        alert('Win');
-        contentClear();
-        createMainPage();
+        document.querySelector('.audio-affects').src = 'audio/success.mp3';
+        winLoseMassage.textContent = "You are Won";
+        contentBlock.prepend(winLoseBlock);
+        setTimeout(() => {
+            contentClear();
+            createMainPage();
+        }, 2500);
     } else if(gameCompliteCounter == 8 && rateString.childNodes.length != 8){
-        alert('lose');
-        contentClear();
-        createMainPage();
+        document.querySelector('.audio-affects').src = 'audio/failure.mp3';
+        winLoseMassage.textContent = `You are Lose, mistakes: ${rateString.childNodes.length-gameCompliteCounter}`;
+        contentBlock.prepend(winLoseBlock);
+        setTimeout(() => {
+            contentClear();
+            createMainPage();
+        }, 2500);
     }
 }
 
@@ -225,7 +273,7 @@ contentBlock.addEventListener('click', (event) => {
             rateString.appendChild(starComplete);
             gameCompliteCounter++;
             event.target.classList.add('front-card-compl');
-            setTimeout(gameMode, 2000); 
+            setTimeout(gameMode, 1500); 
         } else if(event.target.classList.contains('front-card') && !event.target.classList.contains('front-card-compl') && document.querySelector('.audio').id != event.target.id){
             let starDefeate = document.createElement('div');
             starDefeate.className = 'star-defeate';
