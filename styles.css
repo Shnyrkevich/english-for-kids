@@ -389,3 +389,34 @@ input[type=checkbox]:checked + .switch-btn {
     text-align: center;
 }
 
+.statistic-row--first {
+    background-color: rgb(7, 255, 189);
+    border-radius: 5px;
+}
+
+.button-block {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: inline-flex;
+    width: 100%;
+    height: 50px;
+}
+
+.button-statistic {
+    min-width: 80px;
+    width: 150px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(29, 106, 132);
+    color: white;
+    cursor: pointer;
+    transition: all 1s;
+    outline: none;
+}
+
+.button-statistic:hover {
+    background: linear-gradient(180deg,#007b7d,rgb(7, 255, 189) 100%);
+    box-shadow:0px 0px 15px 9px rgba(0,0,0,0.21);
+}
+

@@ -1,5 +1,5 @@
 const cards = [ 
-  ['Action (set A)', 'Action (set B)', 'Animal (set A)', 'Animal (set B)', 'Clothes', 'Emotions'],
+  ['Action (set A)', 'Action (set B)', 'Action (set C)', 'Adjective', 'Animal (set A)', 'Animal (set B)', 'Clothes', 'Emotions'],
   [
     {
       word: 'cry',
@@ -146,6 +146,154 @@ const cards = [
       successCllick: 0,
       failedClick: 0,
       audioSrc: 'audio/swim.mp3'
+    }
+  ],
+  [
+    {
+      word: 'learn',
+      translation: 'учить',
+      image: 'img/learn.jpg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/learn.mp3'
+    },
+    {
+      word: 'live',
+      translation: 'жить',
+      image: 'img/live.jpg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/live.mp3'
+    },
+    {
+      word: 'move',
+      translation: 'двигать',
+      image: 'img/move.jpg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/move.mp3'
+    },
+    {
+      word: 'promise',
+      translation: 'обещать',
+      image: 'img/promise.jpg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/promise.mp3'
+    },
+    {
+      word: 'spend',
+      translation: 'проводить',
+      image: 'img/spend.jpg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/spend.mp3'
+    },
+    {
+      word: 'turn',
+      translation: 'поворачивать',
+      image: 'img/turn.jpg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/turn.mp3'
+    },
+    {
+      word: 'fill',
+      translation: 'заполнять',
+      image: 'img/fill.jpg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/fill.mp3'
+    },
+    {
+      word: 'explain',
+      translation: 'объяснять',
+      image: 'img/explain.jpg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/explain.mp3'
+    }
+  ],
+  [
+    {
+      word: 'clean',
+      translation: 'чистый',
+      image: 'img/clean.jpg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/clean.mp3'
+    },
+    {
+      word: 'great',
+      translation: 'великий',
+      image: 'img/great.jpeg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/great.mp3'
+    },
+    {
+      word: 'important',
+      translation: 'важный',
+      image: 'img/important.jpg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/important.mp3'
+    },
+    {
+      word: 'necessary',
+      translation: 'необходимый',
+      image: 'img/necessary.jpg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/necessary.mp3'
+    },
+    {
+      word: 'serious',
+      translation: 'серьёзный',
+      image: 'img/serious.jpg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/serious.mp3'
+    },
+    {
+      word: 'boiling',
+      translation: 'кипящий',
+      image: 'img/boiling.jpg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/boiling.mp3'
+    },
+    {
+      word: 'cheap',
+      translation: 'дешевый',
+      image: 'img/cheap.jpg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/cheap.mp3'
+    },
+    {
+      word: 'wet',
+      translation: 'влажный',
+      image: 'img/wet.jpg',
+      trainClick: 0,
+      successCllick: 0,
+      failedClick: 0,
+      audioSrc: 'audio/wet.mp3'
     }
   ],
   [
