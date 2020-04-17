@@ -126,8 +126,7 @@ function createStatiticEl(obj){
             rowEl.textContent = obj[el];
             row.appendChild(rowEl);
         }
-    }
-    
+    }   
     return row;
 } 
 
@@ -182,6 +181,18 @@ function createMainPage(){
     contentBlock.classList.add('main');
 }
 
+function createAudioBlock(){
+    let audio = document.createElement('audio');
+    let audioAffects = document.createElement('audio');
+    audio.className = 'audio';
+    audioAffects.className = 'audio-affects';
+    audio.src = "";
+    audioAffects.src = "";
+    audioAffects.autoplay = 'autoplay';
+    contentBlock.appendChild(audio);
+    contentBlock.appendChild(audioAffects);
+}
+
 createMainPage();
 
 function createCards(eventTextContent){
@@ -193,15 +204,7 @@ function createCards(eventTextContent){
         for(let i= 0; i < mas.length; i++){    
              createCard(mas[i].image, mas[i].word, mas[i].translation, mas[i].audioSrc);
         }
-        let audio = document.createElement('audio');
-        let audioAffects = document.createElement('audio');
-        audio.className = 'audio';
-        audioAffects.className = 'audio-affects';
-        audio.src = "";
-        audioAffects.src = "";
-        audioAffects.autoplay = 'autoplay';
-        contentBlock.appendChild(audio);
-        contentBlock.appendChild(audioAffects);
+        createAudioBlock();
         if(contentBlock.classList.contains('main') || contentBlock.classList.contains('statistic')){
             contentBlock.classList.remove('main');
             contentBlock.classList.remove('statistic');
@@ -210,7 +213,6 @@ function createCards(eventTextContent){
         if(gameStatus){
             contentBlock.appendChild(BUTTONG);
             startGameStatus = false;
-            BUTTONG.classList.remove('game-button-active');
         }
     }  else if(eventTextContent == "Main Page"){
         contentClear();
@@ -236,7 +238,6 @@ function getRandomInt(mas){
 }
 
 function gameMode(){
-    console.log(gameCompliteCounter)
     let sounds = [];
     document.querySelectorAll('.front-card').forEach(el => {
         if(!el.classList.contains('front-card-compl')){
@@ -283,6 +284,42 @@ function findPos(fieldStatus, auidioId){
 
 }
 
+function findLessVariotyWords(){
+    let masIndexes = [];
+    let varioty = 0;
+    for(let i = 1; i < statistcData.length; i++){
+        let indexWord = [];
+        let wordPosition = 0;
+        varioty = 0;
+        for(let j = 0; j < statistcData[i].length; j++){
+            if(statistcData[i][j].failedClick != 0){
+                let varioty1 = statistcData[i][j].failedClick/(statistcData[i][j].successCllick+statistcData[i][j].failedClick);
+                if(varioty1 > varioty){
+                    varioty = varioty1;
+                    wordPosition = j;
+                } 
+                indexWord = [i, wordPosition];
+                //console.log(indexWord);
+            }
+        }
+        if(indexWord.length != 0){
+            masIndexes.push(indexWord);
+        }
+    }   
+    return masIndexes;
+}
+
+function createCardsForStatic(){
+    let wordsMas = findLessVariotyWords();
+    contentClear();
+    for(let i = 0; i < wordsMas.length; i++){    
+         createCard(statistcData[wordsMas[i][0]][wordsMas[i][1]].image, statistcData[wordsMas[i][0]][wordsMas[i][1]].word, statistcData[wordsMas[i][0]][wordsMas[i][1]].translation, statistcData[wordsMas[i][0]][wordsMas[i][1]].audioSrc);
+    }
+    contentBlock.classList.remove('statistic');
+    contentBlock.classList.add('game-cards');
+    createAudioBlock();
+}
+
 links.addEventListener('click', (event) => {
     if(!event.target.classList.contains('navigation-list')){
         createCards(event.target.textContent);
@@ -299,8 +336,10 @@ contentBlock.addEventListener('click', (event) => {
         if(event.target.classList.contains('front-card')){
             document.querySelector('.audio').src = event.target.id;
             document.querySelector('.audio').autoplay = 'autoplay';
-            let indexMas = findPos(gameCardsStatus, event.target.id);
-            statistcData[indexMas[0]][indexMas[1]].trainClick += 1;
+            if(gameCardsStatus != 'Statistic'){
+                let indexMas = findPos(gameCardsStatus, event.target.id);
+                statistcData[indexMas[0]][indexMas[1]].trainClick += 1;
+            }
         }
         if(event.target.classList.contains('rotate')){
             event.target.closest('.card').childNodes[1].classList.add('back-active');
@@ -354,9 +393,11 @@ CHECK.addEventListener('change', (event) => {
         if(contentBlock.classList.contains('main')){
             contentClear();
             createMainPage();
-        } else if(contentBlock.classList.contains('game-cards')){
+        } else if(contentBlock.classList.contains('game-cards') && gameCardsStatus != 'Statistic'){
             contentClear();
             createCards(gameCardsStatus);
+        } else if(contentBlock.classList.contains('game-cards') && gameCardsStatus == 'Statistic'){
+            createCardsForStatic();
         }
         document.querySelector('.navigation-block').classList.add('navigation-block--game');
     } else {
@@ -366,9 +407,11 @@ CHECK.addEventListener('change', (event) => {
         if(contentBlock.classList.contains('main')){
             contentClear();
             createMainPage();
-        } else if(contentBlock.classList.contains('game-cards')){
+        } else if(contentBlock.classList.contains('game-cards') && gameCardsStatus != 'Statistic'){
             contentClear();
             createCards(gameCardsStatus);
+        } else if(contentBlock.classList.contains('game-cards') && gameCardsStatus == 'Statistic'){
+            createCardsForStatic();
         }
         document.querySelector('.navigation-block').classList.remove('navigation-block--game');
     }
@@ -394,5 +437,8 @@ buttonReset.addEventListener('click', () => {
     createStatistic();
 });
 
-
+buttonRepeatDifficultWords.addEventListener('click', () => {
+    createCardsForStatic();
+    gameCardsStatus = 'Statistic';
+});
 

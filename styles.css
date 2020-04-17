@@ -387,6 +387,7 @@ input[type=checkbox]:checked + .switch-btn {
 .statistic-row div {
     width: 20%;
     text-align: center;
+    text-overflow: ellipsis;
 }
 
 .statistic-row--first {
