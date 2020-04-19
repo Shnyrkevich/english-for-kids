@@ -215,6 +215,7 @@ function createCards(eventTextContent){
             contentBlock.classList.add('game-cards');
         }
         if(gameStatus){
+            BUTTONG.classList.remove('game-button-active');
             contentBlock.appendChild(BUTTONG);
             startGameStatus = false;
         }
@@ -242,6 +243,17 @@ function getRandomInt(mas){
     return Math.floor(Math.random() * Math.floor(mas.length));
 }
 
+// clean links active status and give Main Page link active, after game complite
+function cleanLinks(){
+    document.querySelectorAll('.navigation-list li a').forEach( el => {
+        if(el.textContent == 'Main Page'){
+            el.classList.add('li-active');
+        } else {
+            el.classList.remove('li-active');
+        }
+    });
+}
+
 //function what calling when you click on game card
 function gameMode(){
     let sounds = [];
@@ -261,6 +273,7 @@ function gameMode(){
         winLoseMassage.textContent = "You are Won";
         contentBlock.prepend(winLoseBlock);
         setTimeout(() => {
+            cleanLinks();
             contentClear();
             createMainPage();
         }, 2500);
@@ -269,6 +282,7 @@ function gameMode(){
         winLoseMassage.textContent = `You are Lose, mistakes: ${rateString.childNodes.length-gameCompliteCounter}`;
         contentBlock.prepend(winLoseBlock);
         setTimeout(() => {
+            cleanLinks();
             contentClear();
             createMainPage();
         }, 2500);
