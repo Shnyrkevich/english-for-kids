@@ -1,7 +1,6 @@
 
 import cards from './cards.js';
 
-let links = document.querySelector('.navigation-list');
 let gameStatus = false;
 let gameCardsStatus = '';
 let startGameStatus = false;
@@ -27,6 +26,10 @@ winLoseMassage.className = "win-or-lose--message";
 winLoseBlock.className = "win-or-lose";
 winLoseBlock.appendChild(winLoseMassage);
 
+const burgerBlock = document.querySelector('.burger');
+const burgerIcon = document.querySelector('.burger-icon');
+const navigationBlock = document.querySelector('.navigation-block');
+const links = document.querySelector('.navigation-list');
 const wrap = document.querySelector('.wrapper');
 const CHECK = document.querySelector('.train-switch');
 const BUTTONG = document.createElement('button');
@@ -36,19 +39,7 @@ const contentBlock = document.createElement('div');
 contentBlock.className = 'content-block'
 wrap.appendChild(contentBlock);
 
-const burgerBlock = document.querySelector('.burger');
-const burgerIcon = document.querySelector('.burger-icon');
-const navigationBlock = document.querySelector('.navigation-block');
-
-burgerBlock.onclick = function(){
-    burgerIcon.classList.toggle('burger-icon-active');
-    if(burgerIcon.classList.contains('burger-icon-active')){
-        navigationBlock.classList.add('navigation-block-active');
-    } else { 
-        navigationBlock.classList.remove('navigation-block-active');
-    }
-}
-
+//create game card with sound
 function createCard(backgroundImg, word, translate, audioLink){
     let cardContainer = document.createElement('div');
     let card = document.createElement('div');
@@ -92,6 +83,7 @@ function createCard(backgroundImg, word, translate, audioLink){
     contentBlock.appendChild(cardContainer);
 }
 
+//create main card on mane page
 function createMainCard(backgroundImg, cardTitle){
     let cardContainer = document.createElement('div');
     let card = document.createElement('div');
@@ -116,6 +108,7 @@ function createMainCard(backgroundImg, cardTitle){
     contentBlock.appendChild(cardContainer);
 }
 
+//create create row in statistic table
 function createStatiticEl(obj){
     let row = document.createElement('li');
     row.className = 'statistic-row';
@@ -130,6 +123,7 @@ function createStatiticEl(obj){
     return row;
 } 
 
+//create statistic
 function createStatistic(){
     let masNames = ['Word', 'Translate', 'Training Press', 'Successful Click','Erroneous Click'];
     for(let i = 0; i < statistcData[0].length; i++){
@@ -162,6 +156,7 @@ function createStatistic(){
     contentBlock.appendChild(buttonBlock);
 }
 
+//clean content block
 function contentClear() {
     while(contentBlock.firstChild) {
        contentBlock.removeChild(contentBlock.firstChild);
@@ -173,14 +168,21 @@ function contentClear() {
     }
 }
 
+//create main page call createMainCard
 function createMainPage(){
     let mas = cards[0];
     for(let i = 0; i < mas.length; i++){
         createMainCard(cards[i+1][0].image, mas[i]);
     }
+    document.querySelectorAll('.navigation-list li a').forEach( el => {
+        if(el.textContent == 'Main Page'){
+            el.classList.add('li-active');
+        }
+    });
     contentBlock.classList.add('main');
 }
 
+//create audio block for game cards
 function createAudioBlock(){
     let audio = document.createElement('audio');
     let audioAffects = document.createElement('audio');
@@ -193,8 +195,10 @@ function createAudioBlock(){
     contentBlock.appendChild(audioAffects);
 }
 
+//call create main page when page loaded
 createMainPage();
 
+//create game field in different cases
 function createCards(eventTextContent){
     if(eventTextContent != "Main Page" && eventTextContent != "Statistic"){
         let ind = cards[0].indexOf(eventTextContent);
@@ -233,10 +237,12 @@ function createCards(eventTextContent){
     }
 }
 
+//get random number for random audio play
 function getRandomInt(mas){
     return Math.floor(Math.random() * Math.floor(mas.length));
 }
 
+//function what calling when you click on game card
 function gameMode(){
     let sounds = [];
     document.querySelectorAll('.front-card').forEach(el => {
@@ -269,6 +275,7 @@ function gameMode(){
     }
 }
 
+//find position block position 
 function findPos(fieldStatus, auidioId){
     let indField = statistcData[0].indexOf(fieldStatus);
     let indObj = 0;
@@ -284,6 +291,7 @@ function findPos(fieldStatus, auidioId){
 
 }
 
+// find block with small success carioty
 function findLessVariotyWords(){
     let masIndexes = [];
     let varioty = 0;
@@ -309,6 +317,7 @@ function findLessVariotyWords(){
     return masIndexes;
 }
 
+//create statistic cards
 function createCardsForStatic(){
     let wordsMas = findLessVariotyWords();
     contentClear();
@@ -318,6 +327,25 @@ function createCardsForStatic(){
     contentBlock.classList.remove('statistic');
     contentBlock.classList.add('game-cards');
     createAudioBlock();
+}
+
+// ** visability navigation-panel
+function removeNavigationPanel(event){
+    if(!event.target.classList.contains('navigation-list')){
+        burgerIcon.classList.remove('burger-icon-active');
+        navigationBlock.classList.remove('navigation-block-active');
+    }
+}
+
+// == Listeners == //
+
+burgerBlock.onclick = function(){
+    burgerIcon.classList.toggle('burger-icon-active');
+    if(burgerIcon.classList.contains('burger-icon-active')){
+        navigationBlock.classList.add('navigation-block-active');
+    } else { 
+        navigationBlock.classList.remove('navigation-block-active');
+    }
 }
 
 links.addEventListener('click', (event) => {
@@ -330,6 +358,10 @@ links.addEventListener('click', (event) => {
         event.target.classList.add('li-active');
     }
 });
+
+navigationBlock.onclick = function(event){
+    removeNavigationPanel(event);
+}
 
 contentBlock.addEventListener('click', (event) => {
     if(contentBlock.classList.contains('game-cards') && gameStatus == false){
@@ -347,12 +379,20 @@ contentBlock.addEventListener('click', (event) => {
             event.target.classList.add('rotate-none');
         }
     } else if(contentBlock.classList.contains('main')){
-        if(event.target.classList.contains('card--main')){
+        if(event.target.classList.contains('main-card-img') || event.target.classList.contains('card--main')){
+            let textCont = event.target.closest('.card-container').childNodes[0].childNodes[1].textContent;
             contentClear();
             contentBlock.classList.remove('main');
             contentBlock.classList.add('game-cards');
-            createCards(event.target.textContent);
-            gameCardsStatus = event.target.textContent;
+            createCards(textCont);
+            gameCardsStatus = textCont;
+            document.querySelectorAll('.navigation-list li a').forEach( el => {
+                if(el.textContent == textCont){
+                    el.classList.add('li-active');
+                } else if(el.textContent == 'Main Page'){
+                    el.classList.remove('li-active');
+                }
+            });
         }
     } else if(gameStatus && startGameStatus){
         if( document.querySelector('.audio').id == event.target.id && event.target.classList.contains('front-card')){
@@ -374,6 +414,7 @@ contentBlock.addEventListener('click', (event) => {
             statistcData[indexMas[0]][indexMas[1]].failedClick +=1; 
         }
     }
+    removeNavigationPanel(event);
     localStorage.data = JSON.stringify(statistcData);
 });
 

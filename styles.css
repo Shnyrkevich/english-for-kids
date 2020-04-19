@@ -295,6 +295,7 @@ input[type=checkbox]:checked + .switch-btn {
     box-shadow: 3px 1px 2px 1px rgba(0, 0, 0, 0.2);
     perspective: 1000px;
     cursor: pointer;
+    z-index: 5;
 }
 
 .main--game {
@@ -322,7 +323,7 @@ input[type=checkbox]:checked + .switch-btn {
     padding: 0 15px 0 15px;
     border-radius: 5px;
     width: 268px;
-    height: 48px;
+    height: 50px;
     text-align: center;
 }
 
